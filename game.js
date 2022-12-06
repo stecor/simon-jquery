@@ -54,4 +54,5 @@ $('.btn').click(function (event) {
   console.log(event.target.id)
   let btnColor = event.target.id
   playSound(btnColor)
+  buttonPressed(btnColor)
 })
