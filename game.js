@@ -8,11 +8,13 @@ let greenAudio = new Audio('/sounds/green.mp3')
 let yellowAudio = new Audio('/sounds/yellow.mp3')
 let wrongAudio = new Audio('/sounds/wrong.mp3')
 
-//randon sequence
+//randon sequence of colors
 
 function nextSequence() {
   return Math.floor(Math.random() * 3)
 }
+
+//function to play color sound
 
 function playSound(btnColor) {
   switch (btnColor) {
@@ -34,15 +36,9 @@ function playSound(btnColor) {
   }
 }
 
-randomNumber = nextSequence()
-randomChosenColour = buttonColours[Number(randomNumber)]
-gamePattern.push(randomChosenColour)
-
-gamePattern.forEach(buttonPressed)
+//button pressed display
 
 function buttonPressed(item) {
-  console.log(item)
-  console.log(gamePattern)
   $('#' + item).addClass('pressed')
 
   setTimeout(function () {
@@ -50,9 +46,24 @@ function buttonPressed(item) {
   }, 500)
 }
 
+//gamer event
+
 $('.btn').click(function (event) {
   console.log(event.target.id)
   let btnColor = event.target.id
   playSound(btnColor)
   buttonPressed(btnColor)
+  gamePattern.push(btnColor)
+  console.log(gamePattern)
+})
+
+document.addEventListener('keydown', function (e) {
+  //alert('key was pressed!!' + e.key)
+  if (e.key === 'a' || e.key === 'A') {
+    randomNumber = nextSequence()
+    randomChosenColour = buttonColours[Number(randomNumber)]
+    gamePattern.push(randomChosenColour)
+
+    gamePattern.forEach(buttonPressed)
+  }
 })
