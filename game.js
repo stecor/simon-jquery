@@ -19,17 +19,20 @@ const equals = (a, b) => a.length === b.length && a.every((v, i) => v === b[i])
 function checkAnswer() {
   console.log('userClicked: ' + userClickedPattern)
   console.log('gameClicked: ' + gamePattern)
-
-  if (equals(userClickedPattern, gamePattern)) {
-    nextSequence()
-    console.log('correct')
-    level++
-  } else {
-    console.log('wrong')
-    level = 0
-    userClickedPattern = []
-    buttonPressed('wrong')
+  if (userClickedPattern.length === gamePattern.length) {
+    if (equals(userClickedPattern, gamePattern)) {
+      userClickedPattern = []
+      nextSequence()
+      console.log('correct')
+      level++
+    } else {
+      console.log('wrong')
+      level = 0
+      userClickedPattern = []
+      buttonPressed('wrong')
+    }
   }
+
   $('#level-title').html('LEVEL ' + level)
 }
 
@@ -99,6 +102,7 @@ document.addEventListener('keydown', function (e) {
   if (e.key === 'a' || e.key === 'A') {
     level = 0
     userClickedPattern = []
+    gamePattern = []
     $('#level-title').html('LEVEL ' + level)
     nextSequence()
   }
