@@ -24,8 +24,11 @@ function nextSequence() {
   }
   randomNumber = Math.floor(Math.random() * 3)
   randomChosenColour = buttonColours[Number(randomNumber)]
-  playSound(randomChosenColour)
-  buttonPressed(randomChosenColour)
+  setTimeout(() => {
+    playSound(randomChosenColour)
+    buttonPressed(randomChosenColour)
+  }, 1000)
+
   return randomChosenColour
 }
 
@@ -70,16 +73,18 @@ $('.btn').click(function (event) {
   buttonPressed(userChosenColor)
   userClickedPattern.push(userChosenColor)
   console.log(userClickedPattern)
+  nextSequence()
 })
 
 document.addEventListener('keydown', function (e) {
   //alert('key was pressed!!' + e.key)
   if (e.key === 'a' || e.key === 'A') {
+    level = 0
     gamePattern = []
+    console.log(level)
     randomChosenColour = nextSequence()
 
     gamePattern.push(randomChosenColour)
-
     console.log(gamePattern)
   }
 })
