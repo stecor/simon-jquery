@@ -1,5 +1,5 @@
 let userClickedPattern = []
-
+let level = 0
 let gamePattern = []
 let buttonColours = ['red', 'blue', 'green', 'yellow']
 let randomChosenColour = ''
@@ -13,6 +13,15 @@ let wrongAudio = new Audio('/sounds/wrong.mp3')
 //randon sequence of colors
 
 function nextSequence() {
+  if (level === 0) {
+    $('#level-title').html('LEVEL 0')
+    level++
+    console.log(level)
+  } else {
+    console.log(level)
+    $('#level-title').html('LEVEL ' + level)
+    level++
+  }
   randomNumber = Math.floor(Math.random() * 3)
   randomChosenColour = buttonColours[Number(randomNumber)]
   playSound(randomChosenColour)
