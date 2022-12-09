@@ -9,27 +9,40 @@ let blueAudio = new Audio('/sounds/blue.mp3')
 let greenAudio = new Audio('/sounds/green.mp3')
 let yellowAudio = new Audio('/sounds/yellow.mp3')
 let wrongAudio = new Audio('/sounds/wrong.mp3')
+let lastUser = ''
+let lastGame = ''
+let currentLevel = []
+let clicked = []
+
+const equals = (a, b) => a.length === b.length && a.every((v, i) => v === b[i])
+
+function checkAnswer() {
+  console.log('userClicked: ' + userClickedPattern)
+  console.log('gameClicked: ' + gamePattern)
+
+  if (equals(userClickedPattern, gamePattern)) {
+    nextSequence()
+    console.log('correct')
+    level++
+  } else {
+    console.log('wrong')
+    level = 0
+    userClickedPattern = []
+    buttonPressed('wrong')
+  }
+  $('#level-title').html('LEVEL ' + level)
+}
 
 //randon sequence of colors
 
 function nextSequence() {
-  if (level === 0) {
-    $('#level-title').html('LEVEL 0')
-    level++
-    console.log(level)
-  } else {
-    console.log(level)
-    $('#level-title').html('LEVEL ' + level)
-    level++
-  }
   randomNumber = Math.floor(Math.random() * 3)
   randomChosenColour = buttonColours[Number(randomNumber)]
+  gamePattern.push(randomChosenColour)
   setTimeout(() => {
     playSound(randomChosenColour)
     buttonPressed(randomChosenColour)
-  }, 1000)
-
-  return randomChosenColour
+  }, 2000)
 }
 
 //function to play color sound
@@ -48,8 +61,8 @@ function playSound(btnColor) {
     case 'yellow':
       yellowAudio.play()
       break
-
     default:
+      wrongAudio.play()
       break
   }
 }
@@ -57,34 +70,36 @@ function playSound(btnColor) {
 //button pressed display
 
 function buttonPressed(item) {
-  $('#' + item).addClass('pressed')
-
-  setTimeout(function () {
-    $('#' + item).removeClass('pressed')
-  }, 500)
+  if (item === 'wrong') {
+    playSound('wrong')
+    $('body').addClass('game-over')
+    setTimeout(function () {
+      $('body').removeClass('game-over')
+    }, 500)
+  } else {
+    $('#' + item).addClass('pressed')
+    setTimeout(function () {
+      $('#' + item).removeClass('pressed')
+    }, 500)
+  }
 }
 
 //user chosen color
 
 $('.btn').click(function (event) {
   let userChosenColor = event.target.id
-  console.log(event.target.id)
+  userClickedPattern.push(userChosenColor)
   playSound(userChosenColor)
   buttonPressed(userChosenColor)
-  userClickedPattern.push(userChosenColor)
-  console.log(userClickedPattern)
-  nextSequence()
+  checkAnswer()
 })
 
 document.addEventListener('keydown', function (e) {
   //alert('key was pressed!!' + e.key)
   if (e.key === 'a' || e.key === 'A') {
     level = 0
-    gamePattern = []
-    console.log(level)
-    randomChosenColour = nextSequence()
-
-    gamePattern.push(randomChosenColour)
-    console.log(gamePattern)
+    userClickedPattern = []
+    $('#level-title').html('LEVEL ' + level)
+    nextSequence()
   }
 })
