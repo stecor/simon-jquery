@@ -98,7 +98,6 @@ $('.btn').click(function (event) {
 })
 
 document.addEventListener('keydown', function (e) {
-  //alert('key was pressed!!' + e.key)
   if (e.key === 'a' || e.key === 'A') {
     level = 0
     userClickedPattern = []
